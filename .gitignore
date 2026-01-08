@@ -22,7 +22,7 @@ conda-env/
 # -------------------------
 # Jupyter notebooks
 # -------------------------
-.ipynb_checkpoints/
+*.ipynb
 
 # -------------------------
 # IDE / Editor files
