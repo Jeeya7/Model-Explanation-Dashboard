@@ -30,6 +30,11 @@ conda-env/
 .vscode/
 .idea/
 
+# -------------------------
+# Packaging metadata
+# -------------------------
+*.egg-info/
+
 
 
 
