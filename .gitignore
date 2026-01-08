@@ -1,0 +1,35 @@
+# -------------------------
+# Python cache / compiled
+# -------------------------
+__pycache__/
+*.py[cod]
+
+# -------------------------
+# Virtual environments
+# -------------------------
+.env/
+.venv/
+venv/
+env/
+
+# -------------------------
+# Conda environments
+# -------------------------
+conda-env/
+*.conda
+*.env
+
+# -------------------------
+# Jupyter notebooks
+# -------------------------
+.ipynb_checkpoints/
+
+# -------------------------
+# IDE / Editor files
+# -------------------------
+.vscode/
+.idea/
+
+
+
+
