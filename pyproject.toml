@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "model-explanation-dashboard"
+version = "0.1.0"
+description = "Model explanation dashboard with from-scratch ML models"
+requires-python = ">=3.10"
+
+[tool.setuptools.packages.find]
+where = ["src"]
