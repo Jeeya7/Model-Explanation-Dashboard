@@ -7,12 +7,13 @@ MIN_SAMPLES_PER_LEAF = 2
 
 class Node:
     
-    def __init__(self, feature=None, threshold=None, left=None, right=None, value=None):
+    def __init__(self, feature=None, threshold=None, left=None, right=None, value=None, IG=None):
         self.feature = feature
         self.threshold = threshold
         self.left = left
         self.right = right
         self.value = value 
+        self.IG = IG
     
     def is_leaf(self):
         if(self.value is not None):
@@ -156,6 +157,7 @@ class DecisionTree:
         if IG <= 0.1:
             values, counts = np.unique(labels, return_counts=True)
             node.value = values[np.argmax(counts)]
+            node.IG = IG
             return node
 
         
@@ -165,10 +167,12 @@ class DecisionTree:
 
             values, counts = np.unique(labels, return_counts=True)
             node.value = values[np.argmax(counts)]
+            node.IG = IG
             return node
         
         node.feature=feature_to_split_on
         node.threshold=threshold
+        node.IG = IG
         
         left_node = Node()
         right_node = Node()
