@@ -28,7 +28,6 @@ class Node:
         self.right = right          # Right child node
         self.value = value          # Predicted class (for leaf nodes)
         self.IG = IG                # Information Gain for the split
-        self.
 
     def is_leaf(self):
         """Check if the node is a leaf node."""
