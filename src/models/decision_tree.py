@@ -191,7 +191,10 @@ class DecisionTree:
             return self.__traverse__(node.right, x)
                 
     def predict(self, X):
-        
         return[self.__traverse__(self.root, X[i]) for i in range(len(X))]
+    
+    def predict_one(self, x):
+        return self.__traverse__(self.root, x)
+
         
         
