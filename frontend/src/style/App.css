@@ -1,0 +1,52 @@
+/* App container */
+.app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f3f4f6; /* light dashboard gray */
+}
+
+.app h2 {
+  text-align: center;
+  color: #071934; /* dark header blue */
+}
+/* Dashboard grid */
+.dashboard {
+  flex: 1;                 /* take remaining height under header */
+  min-height: 0;           /* important so children can scroll */
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+
+/* Panel base style */
+.panel {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  height: 100%;
+}
+
+/* Optional visual distinction */
+.left-panel {
+  min-width: 220px;
+}
+
+.center-panel {
+  min-width: 400px;
+}
+
+.right-panel {
+  min-width: 220px;
+}
+
+/* Headings inside panels */
+.panel h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1f2937;
+}
