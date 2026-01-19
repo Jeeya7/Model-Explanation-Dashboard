@@ -14,6 +14,7 @@ def main():
     from models import decision_tree
     from data import loaders
     from sklearn.model_selection import train_test_split
+    from dashboard.tree_exporter import export_tree
     import numpy as np
 
     # Initialize the custom Decision Tree model
@@ -35,7 +36,9 @@ def main():
     acc = np.mean(np.array(preds) == np.array(y_test))
     print(f"Test Accuracy: {acc:.4f}")
 
-    return
+    return export_tree(tree_model,
+                       feature_names,
+                       label_names)
 
 # Entry point for script execution
 if __name__ == "__main__":
