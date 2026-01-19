@@ -103,6 +103,7 @@ class TreeResponseDTO:
         edges (list[TreeEdgeDTO]): List of tree edges.
         metrics (MetricsDTO | None): Model evaluation metrics.
         feature_names (list[str]): List of feature names in dataset.
+        label_names (list[str]): List of label/class names in dataset.
     """
     def __init__(
         self,
@@ -110,13 +111,15 @@ class TreeResponseDTO:
         nodes: list[TreeNodeDTO],
         edges: list[TreeEdgeDTO],
         metrics: MetricsDTO | None,
-        feature_names: list[str]
+        feature_names: list[str],
+        label_names: list[str]
     ):
         self.nodes = nodes  # List of tree nodes
         self.edges = edges  # List of tree edges
         self.metrics = metrics  # Model evaluation metrics
         self.root_id = root_id  # Root node identifier
         self.feature_names = feature_names  # List of feature names
+        self.label_names = label_names # List of label/class names
 
 
 
