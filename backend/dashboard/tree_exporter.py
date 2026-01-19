@@ -4,20 +4,20 @@ from collections import deque
 
 
 def export_tree(
-    root_node: tree.Node, 
+    tree: tree.DecisionTree, 
     feature_names: list[str],
     label_names: list[str]):
     
     dto_nodes = []
     dto_edges = []
     
-    dto_nodes, dto_edges = __walk__(root_node, dto_nodes, dto_edges)
+    dto_nodes, dto_edges = __walk__(tree.root, dto_nodes, dto_edges)
     dto_response = dto.TreeResponseDTO()
     dto_response.edges = dto_edges
     dto_response.nodes = dto_nodes
     dto_response.feature_names = feature_names
     
-    if root_node is None:
+    if tree.root is None:
         dto_response.root_id = None
         dto_response.nodes = []
         dto_response.edges = []
