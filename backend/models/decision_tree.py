@@ -56,13 +56,21 @@ class DecisionTree:
     Provides methods for training and prediction.
     """
 
-    def __init__(self, root : Node | None = None):
+    def __init__(self, 
+                 max_depth: int | None,
+                 min_samples_per_leaf: int | None,
+                 root: Node | None = None
+                 ):
         """
         Initialize the DecisionTree classifier.
         Args:
             root (Node, optional): Root node of the tree. Defaults to None.
+            max_depth (int, optional): Max Depth of the tree. Defaults to MAX_DEPTH.
+            min_samples_per_leaf (int, optional): Minimum samples per leaf. Defaults to MIN_SAMPLES_PER_LEAF.
         """
         self.root = root  # Root node of the tree
+        self.max_depth = max_depth if max_depth is not None else MAX_DEPTH
+        self.min_samples_per_leaf = min_samples_per_leaf if min_samples_per_leaf is not None else MIN_SAMPLES_PER_LEAF
 
     def calculate_entropy(self, labels : np.ndarray):
         """
@@ -162,21 +170,21 @@ class DecisionTree:
         return left_features, right_features, left_labels, right_labels
 
     @staticmethod
-    def stopping_criteria(features : np.ndarray,
-                          labels : np.ndarray, 
-                          depth : int):
+    def stopping_criteria(labels: np.ndarray, 
+                          depth: int,
+                          max_depth: int):
         """
         Evaluate whether the tree should stop splitting further.
         Args:
-            features (np.ndarray): Feature matrix.
             labels (np.ndarray): Class labels.
             depth (int): Current depth of the tree.
+            max_depth (int): Max depth of the tree.
         Returns:
             bool: True if stopping criteria are met, False otherwise.
         """
         if len(np.unique(labels)) <= 1:
             return True
-        if depth >= MAX_DEPTH:
+        if depth >= max_depth:
             return True
         return False
 
@@ -218,7 +226,7 @@ class DecisionTree:
         Returns:
             Node: The constructed node (leaf or internal).
         """
-        if DecisionTree.stopping_criteria(features, labels, depth):
+        if DecisionTree.stopping_criteria(features, labels, depth, self.max_depth):
             # Assign the majority class as the value for the leaf node
             node.class_counts = self.__class_count__(labels)
             node.value = max(node.class_counts, key=node.class_counts.get)
@@ -239,7 +247,7 @@ class DecisionTree:
         
         left_feature, right_feature, left_labels, right_labels = self.split(features, feature_to_split_on, threshold, labels)
         
-        if len(left_labels) < MIN_SAMPLES_PER_LEAF or len(right_labels) < MIN_SAMPLES_PER_LEAF:
+        if len(left_labels) < self.min_samples_per_leaf or len(right_labels) < self.min_samples_per_leaf:
             # If a split would result in a leaf with too few samples, make this a leaf node
             node.class_counts = self.__class_count__(labels)
             node.value = max(node.class_counts, key=node.class_counts.get)
