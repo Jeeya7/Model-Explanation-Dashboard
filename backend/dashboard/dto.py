@@ -13,6 +13,8 @@ class TreeNodeDTO:
         class_counts (dict[int, int] | None): Class distribution at node.
         depth (int | None): Depth of node in tree.
         predicted_class (int | None): Predicted class at node.
+        left_id (int | None): Id of the left child.
+        right_id (int | None): Id of the right child.
     """
     def __init__(
         self,
@@ -25,7 +27,9 @@ class TreeNodeDTO:
         samples: int | None,
         class_counts: dict[int, int] | None,
         depth: int | None,
-        predicted_class: int | None
+        predicted_class: int | None,
+        left_id: int | None,
+        right_id: int | None
         
     ):
         self.id = id  # Unique node identifier
@@ -38,6 +42,8 @@ class TreeNodeDTO:
         self.class_counts = class_counts  # Class distribution at node
         self.depth = depth  # Depth of node in tree
         self.predicted_class = predicted_class  # Predicted class at node
+        self.left_id = left_id # Id of the left child
+        self.right_id = right_id # Id of the right child
         
 class TreeEdgeDTO:
     """
