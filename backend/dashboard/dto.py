@@ -1,17 +1,17 @@
 class TreeNodeDTO:
     """
-    DTO for a decision tree node.
+    Professional DTO representing a node in a decision tree.
     
-    Fields:
-        id (int): Node ID.
-        feature (int | None): Splitting feature index (None for leaves).
-        threshold (float | None): Split threshold (None for leaves).
+    Attributes:
+        id (int): Unique node identifier.
+        feature (int | None): Index of the splitting feature (None for leaves).
+        threshold (float | None): Threshold value for split (None for leaves).
         value (int | None): Class label or value (for leaves).
-        information_gain (float | None): Info gain from split (None for leaves).
-        is_leaf (bool): True if leaf node.
+        information_gain (float | None): Information gain from split (None for leaves).
+        is_leaf (bool): Indicates if node is a leaf.
         samples (int | None): Number of samples at node.
-        class_counts (list[int] | None): Class counts at node.
-        depth (int | None): Node depth in tree.
+        class_counts (dict[int, int] | None): Class distribution at node.
+        depth (int | None): Depth of node in tree.
         predicted_class (int | None): Predicted class at node.
     """
     def __init__(
@@ -23,41 +23,41 @@ class TreeNodeDTO:
         information_gain: float | None,
         is_leaf: bool,
         samples: int | None,
-        class_counts: list[int] | None,
+        class_counts: dict[int, int] | None,
         depth: int | None,
         predicted_class: int | None
         
     ):
-        self.id = id  # Node ID
-        self.feature = feature  # Splitting feature index
-        self.threshold = threshold  # Split threshold
+        self.id = id  # Unique node identifier
+        self.feature = feature  # Index of splitting feature
+        self.threshold = threshold  # Threshold value for split
         self.value = value  # Class label or value (for leaves)
         self.information_gain = information_gain  # Information gain from split
-        self.is_leaf = is_leaf  # True if leaf node
+        self.is_leaf = is_leaf  # Indicates if node is a leaf
         self.samples = samples  # Number of samples at node
-        self.class_counts = class_counts  # Class counts at node
-        self.depth = depth  # Node depth
+        self.class_counts = class_counts  # Class distribution at node
+        self.depth = depth  # Depth of node in tree
         self.predicted_class = predicted_class  # Predicted class at node
         
 class TreeEdgeDTO:
     """
-    DTO for an edge between decision tree nodes.
+    Professional DTO representing an edge between decision tree nodes.
     
-    Fields:
-        source (int): Source node ID.
-        target (int): Target node ID.
+    Attributes:
+        source (int): Source node identifier.
+        target (int): Target node identifier.
         condition (str): Edge condition (e.g., "≤ threshold", "> threshold").
     """
     def __init__(self, source: int, target: int, condition: str):
-        self.source = source  # Source node ID
-        self.target = target  # Target node ID
+        self.source = source  # Source node identifier
+        self.target = target  # Target node identifier
         self.condition = condition  # Edge condition
         
 class MetricsDTO:
     """
-    DTO for model evaluation metrics.
+    Professional DTO for model evaluation metrics.
     
-    Fields:
+    Attributes:
         accuracy (float): Model accuracy.
         precision (float | None): Precision (optional).
         recall (float | None): Recall (optional).
@@ -70,35 +70,35 @@ class MetricsDTO:
         recall: float | None = None,
         f1: float | None = None
     ):
-        self.accuracy = accuracy  # Accuracy
-        self.precision = precision  # Precision
-        self.recall = recall  # Recall
+        self.accuracy = accuracy  # Model accuracy
+        self.precision = precision  # Precision metric
+        self.recall = recall  # Recall metric
         self.f1 = f1  # F1 score
 
 class TreeResponseDTO:
     """
-    DTO for decision tree response, including structure and metrics.
+    Professional DTO for decision tree response, including structure and metrics.
     
-    Fields:
-        root_id (int): Root node ID.
-        nodes (list[TreeNodeDTO]): Tree nodes.
-        edges (list[TreeEdgeDTO]): Tree edges.
-        metrics (MetricsDTO): Model metrics.
-        feature_names (list[str]): Feature Names
+    Attributes:
+        root_id (int): Root node identifier.
+        nodes (list[TreeNodeDTO]): List of tree nodes.
+        edges (list[TreeEdgeDTO]): List of tree edges.
+        metrics (MetricsDTO | None): Model evaluation metrics.
+        feature_names (list[str]): List of feature names in dataset.
     """
     def __init__(
         self,
         root_id: int,
         nodes: list[TreeNodeDTO],
         edges: list[TreeEdgeDTO],
-        metrics: MetricsDTO,
+        metrics: MetricsDTO | None,
         feature_names: list[str]
     ):
-        self.nodes = nodes  # Tree nodes
-        self.edges = edges  # Tree edges
-        self.metrics = metrics  # Model metrics
-        self.root_id = root_id  # Root node ID
-        self.feature_names = feature_names # Feature Names of Dataset
+        self.nodes = nodes  # List of tree nodes
+        self.edges = edges  # List of tree edges
+        self.metrics = metrics  # Model evaluation metrics
+        self.root_id = root_id  # Root node identifier
+        self.feature_names = feature_names  # List of feature names
 
 
 
