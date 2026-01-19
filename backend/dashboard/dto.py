@@ -52,12 +52,24 @@ class TreeEdgeDTO:
     Attributes:
         source (int): Source node identifier.
         target (int): Target node identifier.
-        condition (str): Edge condition (e.g., "≤ threshold", "> threshold").
+        branch (str): Indicates which branch this edge represents ("left" or "right").
+        operator (str): The comparison operator used for the split ("<=" for left, ">" for right)..
+        feature (int): Index of the feature used for the split at this edge.
+        threshold (float): Threshold value for the split at this edge.
     """
-    def __init__(self, source: int, target: int, condition: str):
+    def __init__(self, source: int, 
+                 target: int, 
+                 branch: str,
+                 operator: str,
+                 feature: int,
+                 threshold: float):
         self.source = source  # Source node identifier
         self.target = target  # Target node identifier
-        self.condition = condition  # Edge condition
+        self.branch = branch  # Branch identifier
+        self.operator = operator # Comparison Operator
+        self.feature = feature # Index of feature used for split
+        self.threshold = threshold # Threshold value for split
+        
         
 class MetricsDTO:
     """
