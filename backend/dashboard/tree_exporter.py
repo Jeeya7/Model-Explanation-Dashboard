@@ -1,5 +1,5 @@
-from models import decision_tree as tree
-from dashboard import dto
+from backend.models import decision_tree as tree
+from backend.dashboard import dto
 from collections import deque
 
 
