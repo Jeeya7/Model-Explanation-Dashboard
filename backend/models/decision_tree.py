@@ -57,8 +57,8 @@ class DecisionTree:
     """
 
     def __init__(self, 
-                 max_depth: int | None,
-                 min_samples_per_leaf: int | None,
+                 max_depth: int | None = None,
+                 min_samples_per_leaf: int | None = None,
                  root: Node | None = None
                  ):
         """
@@ -226,7 +226,7 @@ class DecisionTree:
         Returns:
             Node: The constructed node (leaf or internal).
         """
-        if DecisionTree.stopping_criteria(features, labels, depth, self.max_depth):
+        if DecisionTree.stopping_criteria(labels, depth, self.max_depth):
             # Assign the majority class as the value for the leaf node
             node.class_counts = self.__class_count__(labels)
             node.value = max(node.class_counts, key=node.class_counts.get)
