@@ -11,10 +11,10 @@ def main():
     Loads the Iris dataset, trains a custom Decision Tree, and prints accuracy on the test set.
     """
     # Import custom and third-party modules
-    from models import decision_tree
-    from data import loaders
+    from backend.models import decision_tree
+    from backend.data import loaders
     from sklearn.model_selection import train_test_split
-    from dashboard.tree_exporter import export_tree
+    from backend.dashboard.tree_exporter import export_tree
     import numpy as np
 
     # Initialize the custom Decision Tree model
@@ -36,10 +36,9 @@ def main():
     acc = np.mean(np.array(preds) == np.array(y_test))
     print(f"Test Accuracy: {acc:.4f}")
 
-    return export_tree(tree_model,
-                       feature_names,
-                       label_names)
+    resp = export_tree(tree_model, feature_names, label_names)
 
+    print(resp.to_dict())
 # Entry point for script execution
 if __name__ == "__main__":
     main()
