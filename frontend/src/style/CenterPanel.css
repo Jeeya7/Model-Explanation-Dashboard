@@ -1,5 +1,5 @@
 /* =========
-   CenterPanel layout (prevents overflow)
+   CenterPanel layout
    ========= */
 .center-panel {
   height: 100%;
@@ -11,10 +11,7 @@
   padding: 16px;
   box-shadow: inset 0 0 0 1px #e5e7eb;
 
-  /* helpful for positioning controls */
   position: relative;
-
-  /* keeps the tree inside the rounded card */
   overflow: hidden;
 }
 
@@ -22,94 +19,24 @@
   font-size: 18px;
   font-weight: 600;
   color: #89a1c2;
-/* ===== Center panel container ===== */
-.center-panel {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-
-  background: #f8fafc;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: inset 0 0 0 1px #e5e7eb;
-
-  position: relative;
-  overflow: hidden;
-}
-
-/* ReactFlow must have a real height */
-.center-panel .react-flow {
-  width: 100%;
-  height: 100%;
-  background: transparent;
-}
-
-/* ===== Controls (zoom) ===== */
-.center-panel .react-flow__controls {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  z-index: 100;
-}
-
-/* ===== Nodes ===== */
-.center-panel .react-flow__node {
-  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  border-radius: 10px;
-  padding: 10px 12px;
-
-  max-width: 260px;
-  white-space: normal;
-  overflow-wrap: anywhere;
-
-  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-
-  text-align: center;
-  font-size: 13px;
-  line-height: 1.35;
-}
-
-.center-panel .react-flow__node.decision-node {
-  background: linear-gradient(180deg, #2563eb, #1d4ed8);
-  color: #ffffff;
-}
-
-.center-panel .react-flow__node.root-node {
-  border: 2px solid #60a5fa;
-  box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.25);
-}
-
-.center-panel .react-flow__node.leaf-node {
-  background: linear-gradient(180deg, #22c55e, #16a34a);
-  color: #ffffff;
-  font-weight: 600;
-}
-
-/* ===== Edges ===== */
-.center-panel .react-flow__edge-path {
-  stroke: #9ca3af;
-  stroke-width: 2;
-}
-
-.center-panel .react-flow__edge-text {
-  font-size: 11px;
-  fill: #6b7280;
-  pointer-events: none;
-}
 
   margin-bottom: 12px;
   padding-bottom: 6px;
   border-bottom: 1px solid #e5e7eb;
 }
 
-/* This wrapper is IMPORTANT: it allows ReactFlow to take remaining space */
+/* =========
+   Canvas wrapper (CRITICAL)
+   ========= */
 .center-panel-canvas {
   flex: 1;
-  min-height: 0; /* critical in a flex column to prevent overflow */
+  min-height: 0;
+  position: relative;
 }
 
-/* Make the ReactFlow canvas actually fill the available height */
+/* =========
+   React Flow base
+   ========= */
 .center-panel .react-flow {
   width: 100%;
   height: 100%;
@@ -117,13 +44,13 @@
 }
 
 /* =========
-   Controls (zoom/magnifier)
+   Controls
    ========= */
 .center-panel .react-flow__controls {
-  z-index: 50;
-  display: flex;
-  visibility: visible;
-  opacity: 1;
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 100;
 }
 
 /* =========
@@ -146,20 +73,15 @@
   line-height: 1.35;
 }
 
-.center-panel .react-flow__node.decision-node {
-  background: linear-gradient(180deg, #2563eb, #1d4ed8);
-  color: #ffffff;
-}
-
 .center-panel .react-flow__node.root-node {
   border: 2px solid #60a5fa;
   box-shadow: 0 0 0 4px rgba(96, 165, 250, 0.25);
 }
 
 .center-panel .react-flow__node.leaf-node {
-  background: linear-gradient(180deg, #22c55e, #16a34a);
-  color: #ffffff;
-  font-weight: 600;
+  background: #dcfce7; /* light green */
+  color: #065f46;
+  border: 1px solid #86efac;
 }
 
 /* =========
@@ -175,22 +97,10 @@
   fill: #6b7280;
   pointer-events: none;
 }
-/* ===== FIX INTERACTION (pan/zoom) ===== */
 
-/* ensure the canvas area can receive mouse/touch events */
-.center-panel-canvas {
-  position: relative;
-  z-index: 0;
-}
-
-/* React Flow uses these layers for panning/zooming */
-.center-panel .react-flow__renderer,
-.center-panel .react-flow__viewport,
-.center-panel .react-flow__pane {
-  pointer-events: all;
-}
-
-/* sometimes nodes/edges can swallow drag; keep the pane interactive */
+/* =========
+   Interaction (pan / zoom)
+   ========= */
 .center-panel .react-flow__pane {
   cursor: grab;
 }
@@ -198,21 +108,3 @@
 .center-panel .react-flow__pane:active {
   cursor: grabbing;
 }
-
-/* keep controls clickable even if the parent is clipping */
-.center-panel .react-flow__controls {
-  pointer-events: all;
-}
-
-.center-panel,
-.center-panel * {
-  pointer-events: auto;
-}
-
-.center-panel .react-flow__controls {
-  position: absolute;
-  left: 12px;
-  bottom: 12px;
-  z-index: 100;
-}
-

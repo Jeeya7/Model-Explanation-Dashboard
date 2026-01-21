@@ -24,13 +24,24 @@ export function treeDtoToReactFlow(tree: TreeDTO): { nodes: Node[]; edges: Edge[
   const nodeList = Object.values(tree.nodes);
   const edgeList = Object.values(tree.edges);
 
-  const nodes: Node[] = nodeList.map((n) => ({
-    id: String(n.id),
-    position: { x: 0, y: 0 }, // placeholder; layout will set real positions
-    data: { label: formatNodeLabel(n, tree.feature_names, tree.label_names) },
-    className:
-      tree.root_id != null && String(tree.root_id) === String(n.id) ? "root-node" : undefined,
-  }));
+  const nodes: Node[] = nodeList.map((n) => {
+    const isLeaf = n.is_leaf || n.value != null;
+    const isRoot =
+      tree.root_id != null && String(tree.root_id) === String(n.id);
+
+    return {
+      id: String(n.id),
+      position: { x: 0, y: 0 }, // placeholder; layout will set real positions
+      data: {
+        label: formatNodeLabel(n, tree.feature_names, tree.label_names),
+      },
+      className: isRoot
+        ? "root-node"
+        : isLeaf
+        ? "leaf-node"
+        : "decision-node",
+    };
+  });
 
   const edges: Edge[] = edgeList.map((e, i) => ({
     id: `e-${e.source}-${e.target}-${i}`,
@@ -43,3 +54,4 @@ export function treeDtoToReactFlow(tree: TreeDTO): { nodes: Node[]; edges: Edge[
   const laidOutNodes = applyTreeLayout(nodes, edges);
   return { nodes: laidOutNodes, edges };
 }
+
