@@ -8,6 +8,6 @@ router = APIRouter()
 def health_check():
     return {"status": "ok"}
 
-@router.post("/train")
+@router.post("/api/train")
 def train():
     return tree_service()
