@@ -6,9 +6,10 @@ type PredictionPanelProps = {
   tree: TreeDTO | null;
   featureValues: number[];
   runId: number;
+  onPrediction?: (prediction: PredictionDTO) => void;
 };
  
-export default function PredictionPanel({ tree, featureValues, runId }: PredictionPanelProps) {
+export default function PredictionPanel({ tree, featureValues, runId, onPrediction }: PredictionPanelProps) {
   const [prediction, setPrediction] = useState<PredictionDTO | null>(null);
   
   const featureRef = useRef<number[]>(featureValues);
@@ -28,9 +29,12 @@ export default function PredictionPanel({ tree, featureValues, runId }: Predicti
     if (runId === 0) return;
 
     getPrediction(featureRef.current, tree)
-      .then(setPrediction)
+      .then((p) => {
+        setPrediction(p);
+        onPrediction?.(p); 
+      })
       .catch(console.error);
-  }, [tree, runId]);
+  }, [tree, runId, onPrediction]);
 
   if (!tree) {
     return (

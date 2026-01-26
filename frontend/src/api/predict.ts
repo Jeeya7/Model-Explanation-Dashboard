@@ -15,5 +15,7 @@ export async function getPrediction(
     if (!res.ok) {
         throw new Error(`Prediction failed: ${res.status}`);
     }
-    return res.json() as Promise<PredictionDTO>;
+    const jsonResponse = await res.json();
+    console.log("Received prediction response:", jsonResponse);
+    return jsonResponse as Promise<PredictionDTO>;
 }

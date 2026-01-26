@@ -1,0 +1,5 @@
+.node--offpath { opacity: 0.25; }
+.node--onpath { opacity: 1; }
+
+.edge--offpath path { opacity: 0.15; }
+.edge--onpath path { opacity: 1; stroke-width: 3px; }
