@@ -1,18 +1,20 @@
-# decision_tree.py
-# -----------------
-# Professional Decision Tree implementation for classification tasks.
-# Author: Jiya Pradhan
-#
-# This module defines a custom, interpretable decision tree classifier using entropy-based splitting
-# and information gain. It is intended for educational use and portfolio demonstration, providing
-# clear structure and extensibility for further research or production adaptation.
+"""
+Custom Decision Tree Classifier for Classification Tasks
+------------------------------------------------------
+Author: Jiya Pradhan
+
+This module implements a custom, interpretable decision tree classifier using entropy-based splitting
+and information gain. Designed for educational and demonstration purposes, it provides a clear structure
+and is easily extensible for research or production adaptation.
+"""
 from __future__ import annotations
 import numpy as np
 
 
+
 # Tree growth hyperparameters
-MAX_DEPTH = 3  # Maximum allowed depth for the tree
-MIN_SAMPLES_PER_LEAF = 2  # Minimum samples required to form a leaf node
+MAX_DEPTH = 3              # Maximum depth allowed for the tree
+MIN_SAMPLES_PER_LEAF = 2   # Minimum number of samples required to form a leaf node
 
 
 class Node:
@@ -21,6 +23,7 @@ class Node:
     Internal nodes store splitting criteria; leaf nodes store prediction results.
     """
     def __init__(self, 
+                 id : int | None = None,
                  feature : int | None = None, 
                  threshold: float | None = None, 
                  left : "Node" | None = None, 
@@ -31,6 +34,7 @@ class Node:
                  class_counts : dict[int, int] | None = None,
                  predicted_class: int | None = None 
         ):
+        self.id = id                # Set by Frontend
         self.feature = feature      # Feature index used for splitting (None for leaf)
         self.threshold = threshold  # Threshold value for split (None for leaf)
         self.left = left            # Left child node (None for leaf)
@@ -43,7 +47,9 @@ class Node:
 
     def is_leaf(self):
         """
-        Returns True if the node is a leaf node (contains a prediction).
+        Check if the node is a leaf node (contains a prediction).
+        Returns:
+            bool: True if the node is a leaf node, False otherwise.
         """
         return self.value is not None
     
@@ -64,9 +70,9 @@ class DecisionTree:
         """
         Initialize the DecisionTree classifier.
         Args:
-            root (Node, optional): Root node of the tree. Defaults to None.
-            max_depth (int, optional): Max Depth of the tree. Defaults to MAX_DEPTH.
-            min_samples_per_leaf (int, optional): Minimum samples per leaf. Defaults to MIN_SAMPLES_PER_LEAF.
+            max_depth (int, optional): Maximum depth of the tree. Defaults to MAX_DEPTH.
+            min_samples_per_leaf (int, optional): Minimum samples required per leaf. Defaults to MIN_SAMPLES_PER_LEAF.
+            root (Node, optional): Root node of the tree. Used for deserialization or custom trees.
         """
         self.root = root  # Root node of the tree
         self.max_depth = max_depth if max_depth is not None else MAX_DEPTH
@@ -78,7 +84,7 @@ class DecisionTree:
         Args:
             labels (np.ndarray): Array of class labels.
         Returns:
-            float: Entropy value.
+            float: Entropy value (measure of impurity).
         """
         if len(labels) == 0:
             return 0.0
@@ -93,7 +99,7 @@ class DecisionTree:
         """
         Identify the optimal feature and threshold for splitting, maximizing information gain.
         Args:
-            features (np.ndarray): Feature matrix.
+            features (np.ndarray): Feature matrix (samples x features).
             labels (np.ndarray): Class labels.
         Returns:
             tuple: (best_threshold, best_feature_index, max_information_gain)
@@ -174,11 +180,11 @@ class DecisionTree:
                           depth: int,
                           max_depth: int):
         """
-        Evaluate whether the tree should stop splitting further.
+        Determine whether the tree should stop splitting further.
         Args:
             labels (np.ndarray): Class labels.
             depth (int): Current depth of the tree.
-            max_depth (int): Max depth of the tree.
+            max_depth (int): Maximum allowed depth.
         Returns:
             bool: True if stopping criteria are met, False otherwise.
         """
@@ -192,7 +198,7 @@ class DecisionTree:
         """
         Train the decision tree using the provided features and labels.
         Args:
-            features (np.ndarray): Feature matrix.
+            features (np.ndarray): Feature matrix (samples x features).
             labels (np.ndarray): Class labels.
         """
         root = Node()
@@ -270,33 +276,42 @@ class DecisionTree:
         node.right = self.__build__(right_node, right_feature, right_labels, depth + 1)
         return node
 
-    def __traverse__(self, node : Node, x : np.ndarray):
+    def __traverse__(self, 
+                     node : Node, 
+                     x : np.ndarray,
+                     path : list):
         """
         Traverse the tree to predict the class label for a single sample.
         Args:
             node (Node): Current node in the tree.
             x (np.ndarray): Feature vector for a single sample.
+            path (list[], optional): List to record the path taken (for interpretability).
         Returns:
             int: Predicted class label.
         """
+        path.append(node.id if node.id is not None else None)
         if node.is_leaf():
-            return node.value
+            return node.value, path
         if x[node.feature] <= node.threshold:
             # Traverse left subtree
-            return self.__traverse__(node.left, x)
+            return self.__traverse__(node.left, x, path)
         else:
             # Traverse right subtree
-            return self.__traverse__(node.right, x)
+            return self.__traverse__(node.right, x, path)
 
     def predict(self, X : np.ndarray):
         """
         Predict class labels for multiple samples.
         Args:
-            X (np.ndarray): Feature matrix.
+            X (np.ndarray): Feature matrix (samples x features).
         Returns:
             list: Predicted class labels for each sample.
         """
-        return [self.__traverse__(self.root, X[i]) for i in range(len(X))]
+        preds = []
+        for i in range(len(X)):
+            pred, _path = self.__traverse__(self.root, X[i], [])
+            preds.append(pred)
+        return preds
 
     def predict_one(self, x : np.ndarray):
         """
@@ -305,8 +320,10 @@ class DecisionTree:
             x (np.ndarray): Feature vector for a single sample.
         Returns:
             int: Predicted class label.
+            list: Path for prediction.
         """
-        return self.__traverse__(self.root, x)
+        path = []
+        return self.__traverse__(self.root, x, path)
 
         
         

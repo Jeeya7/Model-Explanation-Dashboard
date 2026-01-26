@@ -3,10 +3,18 @@ from typing import Any
 import math
 
 def _json_safe(x: Any) -> Any:
+    """
+    Recursively convert an object to a JSON-safe representation.
+    Handles NumPy types, Python built-ins, and nested structures.
+    Args:
+        x (Any): The object to convert.
+    Returns:
+        Any: JSON-safe version of the input.
+    """
     if x is None:
         return None
 
-    # ---- NumPy scalars / arrays (works even if numpy isn't imported)
+    # Handle NumPy scalars/arrays (works even if numpy isn't imported)
     tname = type(x).__name__
     if hasattr(x, "item") and tname.startswith(("int", "float", "bool", "str")):
         try:
@@ -19,7 +27,7 @@ def _json_safe(x: Any) -> Any:
         except Exception:
             pass
 
-    # ---- normal python
+    # Handle standard Python types
     if isinstance(x, (str, int, bool)):
         return x
     if isinstance(x, float):
@@ -31,12 +39,13 @@ def _json_safe(x: Any) -> Any:
     if isinstance(x, (list, tuple)):
         return [_json_safe(v) for v in x]
 
+    # Fallback: convert to string
     return str(x)
 
 class TreeNodeDTO:
     """
-    Professional DTO representing a node in a decision tree.
-    
+    Data Transfer Object representing a node in a decision tree.
+
     Attributes:
         id (int): Unique node identifier.
         feature (int | None): Index of the splitting feature (None for leaves).
@@ -68,19 +77,24 @@ class TreeNodeDTO:
         
     ):
         self.id = id  # Unique node identifier
-        self.feature = feature  # Index of splitting feature
-        self.threshold = threshold  # Threshold value for split
+        self.feature = feature  # Index of splitting feature (None for leaves)
+        self.threshold = threshold  # Threshold value for split (None for leaves)
         self.value = value  # Class label or value (for leaves)
-        self.information_gain = information_gain  # Information gain from split
+        self.information_gain = information_gain  # Information gain from split (None for leaves)
         self.is_leaf = is_leaf  # Indicates if node is a leaf
         self.samples = samples  # Number of samples at node
         self.class_counts = class_counts  # Class distribution at node
         self.depth = depth  # Depth of node in tree
         self.predicted_class = predicted_class  # Predicted class at node
-        self.left_id = left_id # Id of the left child
-        self.right_id = right_id # Id of the right child
+        self.left_id = left_id  # Id of the left child
+        self.right_id = right_id  # Id of the right child
         
     def to_dict(self) -> dict[str, Any]:
+        """
+        Convert the TreeNodeDTO to a JSON-serializable dictionary.
+        Returns:
+            dict[str, Any]: Dictionary representation of the node.
+        """
         return {
             "id": str(self.id) if self.id is not None else None,
             "feature": self.feature,
@@ -106,13 +120,13 @@ class TreeNodeDTO:
         
 class TreeEdgeDTO:
     """
-    Professional DTO representing an edge between decision tree nodes.
-    
+    Data Transfer Object representing an edge between decision tree nodes.
+
     Attributes:
         source (int): Source node identifier.
         target (int): Target node identifier.
         branch (str): Indicates which branch this edge represents ("left" or "right").
-        operator (str): The comparison operator used for the split ("<=" for left, ">" for right)..
+        operator (str): The comparison operator used for the split ("<=" for left, ">" for right).
         feature (int): Index of the feature used for the split at this edge.
         threshold (float): Threshold value for the split at this edge.
     """
@@ -125,12 +139,17 @@ class TreeEdgeDTO:
                  threshold: float = None):
         self.source = source  # Source node identifier
         self.target = target  # Target node identifier
-        self.branch = branch  # Branch identifier
-        self.operator = operator # Comparison Operator
-        self.feature = feature # Index of feature used for split
-        self.threshold = threshold # Threshold value for split
+        self.branch = branch  # Branch identifier ("left" or "right")
+        self.operator = operator  # Comparison operator ("<=", ">")
+        self.feature = feature  # Index of feature used for split
+        self.threshold = threshold  # Threshold value for split
     
     def to_dict(self) -> dict[str, Any]:
+        """
+        Convert the TreeEdgeDTO to a JSON-serializable dictionary.
+        Returns:
+            dict[str, Any]: Dictionary representation of the edge.
+        """
         return {
             "source": str(self.source) if self.source is not None else None,
             "target": str(self.target) if self.target is not None else None,
@@ -149,8 +168,8 @@ class TreeEdgeDTO:
         
 class MetricsDTO:
     """
-    Professional DTO for model evaluation metrics.
-    
+    Data Transfer Object for model evaluation metrics.
+
     Attributes:
         accuracy (float): Model accuracy.
         precision (float | None): Precision (optional).
@@ -165,11 +184,16 @@ class MetricsDTO:
         f1: float | None = None
     ):
         self.accuracy = accuracy  # Model accuracy
-        self.precision = precision  # Precision metric
-        self.recall = recall  # Recall metric
-        self.f1 = f1  # F1 score
+        self.precision = precision  # Precision metric (optional)
+        self.recall = recall  # Recall metric (optional)
+        self.f1 = f1  # F1 score (optional)
         
     def to_dict(self) -> dict[str, Any]:
+        """
+        Convert the MetricsDTO to a JSON-serializable dictionary.
+        Returns:
+            dict[str, Any]: Dictionary representation of the metrics.
+        """
         return {
             "accuracy": _json_safe(self.accuracy),
             "precision": _json_safe(self.precision),
@@ -185,8 +209,8 @@ class MetricsDTO:
 
 class TreeResponseDTO:
     """
-    Professional DTO for decision tree response, including structure and metrics.
-    
+    Data Transfer Object for decision tree response, including structure and metrics.
+
     Attributes:
         root_id (int): Root node identifier.
         nodes (list[TreeNodeDTO]): List of tree nodes.
@@ -206,12 +230,17 @@ class TreeResponseDTO:
     ):
         self.nodes = nodes  # List of tree nodes
         self.edges = edges  # List of tree edges
-        self.metrics = metrics  # Model evaluation metrics
+        self.metrics = metrics  # Model evaluation metrics (optional)
         self.root_id = root_id  # Root node identifier
         self.feature_names = feature_names  # List of feature names
-        self.label_names = label_names # List of label/class names
+        self.label_names = label_names  # List of label/class names
         
     def to_dict(self) -> dict[str, Any]:
+        """
+        Convert the TreeResponseDTO to a JSON-serializable dictionary.
+        Returns:
+            dict[str, Any]: Dictionary representation of the tree response.
+        """
         return {
             "root_id": str(self.root_id) if self.root_id is not None else None,
             "nodes": [] if not self.nodes else [n.to_dict() for n in self.nodes],
@@ -227,5 +256,17 @@ class TreeResponseDTO:
         return f"TreeResponseDTO(root_id={self.root_id}, nodes={n}, edges={e})"
 
 
+class PredictionDTO:
+    """
+    Data Transfer Object for a single prediction result.
 
+    Attributes:
+        predicted_class (int | None): Predicted class label.
+        path (list[int] | None): List of node IDs representing the path taken in the tree.
+    """
+    def __init__(self,
+                 predicted_class: int | None = None,
+                 path: list[int] | None = None):
+        self.predicted_class = predicted_class  # Predicted class label
+        self.path = path  # Path of node IDs traversed for this prediction
 

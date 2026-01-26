@@ -30,7 +30,7 @@ def main():
     tree_model.fit(X_train, y_train)
 
     # Make predictions on the test set
-    preds = tree_model.predict(X_test)
+    preds, pred_path = tree_model.predict(X_test)
 
     # Calculate and print accuracy
     acc = np.mean(np.array(preds) == np.array(y_test))
