@@ -7,7 +7,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import type { SelectChangeEvent } from "@mui/material/Select";
 
-type DatasetType = "Iris" | "Wine" | "Custom";
+type DatasetType = "Iris";
 
 interface HeaderProps {
   dataset: DatasetType;
@@ -70,8 +70,6 @@ function Header({ dataset, onDatasetChange }: HeaderProps) {
               }}
             >
               <MenuItem value="Iris">Iris</MenuItem>
-              <MenuItem value="Wine">Wine</MenuItem>
-              <MenuItem value="Custom">Custom</MenuItem>
             </Select>
           </FormControl>
         </Box>

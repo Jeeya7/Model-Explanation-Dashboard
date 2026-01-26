@@ -38,3 +38,8 @@ export type MetricsDTO = {
     recall: number | null;
     f1_score: number | null;
 }
+
+export type PredictionDTO = {
+    predicted_class: number;
+    path: number[];
+};

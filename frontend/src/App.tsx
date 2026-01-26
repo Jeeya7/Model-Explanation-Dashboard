@@ -19,7 +19,7 @@ function DashboardPage() {
   useEffect(() => {
     let cancelled = false;
 
-    trainTree() // if you support dataset: trainTree(dataset)
+    trainTree() // Future dataset: trainTree(dataset)
       .then((t) => {
         if (cancelled) return;
         setTree(t);
@@ -52,7 +52,6 @@ function DashboardPage() {
         <div className="panel left-panel">
           <h2>Controls</h2>
           <Divider orientation="horizontal" />
-          <p>Feature sliders</p>
           <LeftPanel tree={tree} values={values} onChange={setValues} />
         </div>
 

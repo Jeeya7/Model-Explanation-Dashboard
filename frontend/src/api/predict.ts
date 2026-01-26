@@ -1,0 +1,19 @@
+import type { PredictionDTO } from "./types";
+import type { TreeDTO } from "./types";
+
+export async function getPrediction(
+    featureValues: number[],
+    tree: TreeDTO
+): Promise<PredictionDTO> {
+    const res = await fetch("/api/predict", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ x: featureValues, tree }),
+    });
+    if (!res.ok) {
+        throw new Error(`Prediction failed: ${res.status}`);
+    }
+    return res.json() as Promise<PredictionDTO>;
+}
