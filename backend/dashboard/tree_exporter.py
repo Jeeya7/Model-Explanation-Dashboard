@@ -6,7 +6,9 @@ from collections import deque
 def export_tree(
     tree: tree.DecisionTree, 
     feature_names: list[str],
-    label_names: list[str]):
+    label_names: list[str],
+    confusion_matrix,
+    confusion_matrix_metadata):
     
     dto_nodes = []
     dto_edges = []
@@ -16,6 +18,8 @@ def export_tree(
     dto_response.edges = dto_edges
     dto_response.nodes = dto_nodes
     dto_response.feature_names = feature_names
+    dto_response.confusion_matrix = confusion_matrix
+    dto_response.confusion_matrix_metadata = confusion_matrix_metadata
     
     if tree.root is None:
         dto_response.root_id = None

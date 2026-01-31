@@ -16,6 +16,7 @@ def main():
     from sklearn.model_selection import train_test_split
     from backend.dashboard.tree_exporter import export_tree
     import numpy as np
+    from sklearn import metrics
 
     # Initialize the custom Decision Tree model
     tree_model = decision_tree.DecisionTree()
@@ -30,13 +31,29 @@ def main():
     tree_model.fit(X_train, y_train)
 
     # Make predictions on the test set
-    preds, pred_path = tree_model.predict(X_test)
+    preds = tree_model.predict(X_test)
+    
+    # Calculate the confusion matrix
+    conf_matrix = metrics.confusion_matrix(y_pred=preds,
+                                           y_true=y_test,
+                                           labels=np.unique(labels))
+    
+    print(conf_matrix)
+    # Set metadata for confusion matrix
+    confusion_matrix_meta = {
+    "orientation": "rows=actual,cols=predicted",
+    "normalized": False
+    }
 
     # Calculate and print accuracy
     acc = np.mean(np.array(preds) == np.array(y_test))
     print(f"Test Accuracy: {acc:.4f}")
 
-    resp = export_tree(tree_model, feature_names, label_names)
+    resp = export_tree(tree_model, 
+                       feature_names, 
+                       label_names,
+                       conf_matrix,
+                       confusion_matrix_meta)
 
     print(resp.to_dict())
 # Entry point for script execution

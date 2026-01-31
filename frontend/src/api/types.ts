@@ -3,10 +3,13 @@ export type TreeDTO = {
     root_id: number | null;
     nodes: Record<number, TreeNodeDTO>;
     edges: Record<string, TreeEdgeDTO>;
-    metrics: MetricsDTO;
     feature_names: string[];
     label_names: string[];
-
+    confusion_matrix: number[][];
+    confusion_matrix_meta: {
+        orientation: "rows=actual,cols=predicted";
+        normalized: boolean;
+  };
 }
 
 export type TreeNodeDTO = {
@@ -31,13 +34,6 @@ export type TreeEdgeDTO = {
     feature: number;
     threshold: number;
 };
-
-export type MetricsDTO = {
-    accuracy: number | null;
-    precision: number | null;
-    recall: number | null;
-    f1_score: number | null;
-}
 
 export type PredictionDTO = {
     predicted_class: number;

@@ -107,7 +107,8 @@ class TreeNodeDTO:
             "depth": None if self.depth is None else int(self.depth),
             "predicted_class": None if self.predicted_class is None else int(self.predicted_class),
             "left_id": str(self.left_id) if self.left_id is not None else None,
-            "right_id": str(self.right_id) if self.right_id is not None else None,
+            "right_id": str(self.right_id) if self.right_id is not None else None
+            
         }
 
     def __repr__(self) -> str:
@@ -165,47 +166,7 @@ class TreeEdgeDTO:
             f"branch={self.branch}, op={self.operator}, "
             f"feature={self.feature}, threshold={self.threshold})"
         )
-        
-class MetricsDTO:
-    """
-    Data Transfer Object for model evaluation metrics.
 
-    Attributes:
-        accuracy (float): Model accuracy.
-        precision (float | None): Precision (optional).
-        recall (float | None): Recall (optional).
-        f1 (float | None): F1 score (optional).
-    """
-    def __init__(
-        self,
-        accuracy: float = None,
-        precision: float | None = None,
-        recall: float | None = None,
-        f1: float | None = None
-    ):
-        self.accuracy = accuracy  # Model accuracy
-        self.precision = precision  # Precision metric (optional)
-        self.recall = recall  # Recall metric (optional)
-        self.f1 = f1  # F1 score (optional)
-        
-    def to_dict(self) -> dict[str, Any]:
-        """
-        Convert the MetricsDTO to a JSON-serializable dictionary.
-        Returns:
-            dict[str, Any]: Dictionary representation of the metrics.
-        """
-        return {
-            "accuracy": _json_safe(self.accuracy),
-            "precision": _json_safe(self.precision),
-            "recall": _json_safe(self.recall),
-            "f1": _json_safe(self.f1),
-        }
-
-    def __repr__(self) -> str:
-        return (
-            f"MetricsDTO(acc={self.accuracy}, prec={self.precision}, "
-            f"rec={self.recall}, f1={self.f1})"
-        )
 
 class TreeResponseDTO:
     """
@@ -215,25 +176,26 @@ class TreeResponseDTO:
         root_id (int): Root node identifier.
         nodes (list[TreeNodeDTO]): List of tree nodes.
         edges (list[TreeEdgeDTO]): List of tree edges.
-        metrics (MetricsDTO | None): Model evaluation metrics.
         feature_names (list[str]): List of feature names in dataset.
         label_names (list[str]): List of label/class names in dataset.
     """
     def __init__(
         self,
+        confusion_matrix = None,
+        confusion_matrix_metadata = None,
         root_id: int = None,
         nodes: list[TreeNodeDTO] = None,
         edges: list[TreeEdgeDTO] = None,
-        metrics: MetricsDTO | None = None,
         feature_names: list[str] = None,
-        label_names: list[str] = None
+        label_names: list[str] = None,
     ):
         self.nodes = nodes  # List of tree nodes
         self.edges = edges  # List of tree edges
-        self.metrics = metrics  # Model evaluation metrics (optional)
         self.root_id = root_id  # Root node identifier
         self.feature_names = feature_names  # List of feature names
         self.label_names = label_names  # List of label/class names
+        self.confusion_matrix = confusion_matrix # List of values for confusion matrix
+        self.confusion_matrix_metadata = confusion_matrix_metadata # Dict of metadata for conf_matrix
         
     def to_dict(self) -> dict[str, Any]:
         """
@@ -245,9 +207,10 @@ class TreeResponseDTO:
             "root_id": str(self.root_id) if self.root_id is not None else None,
             "nodes": [] if not self.nodes else [n.to_dict() for n in self.nodes],
             "edges": [] if not self.edges else [e.to_dict() for e in self.edges],
-            "metrics": None if self.metrics is None else self.metrics.to_dict(),
             "feature_names": [] if self.feature_names is None else list(self.feature_names),
             "label_names": [] if self.label_names is None else list(self.label_names),
+            "confusion_matrix": _json_safe(self.confusion_matrix),
+            "confusion_matrix_metadata": _json_safe(self.confusion_matrix_metadata),
         }
 
     def __repr__(self) -> str:

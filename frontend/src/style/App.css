@@ -12,12 +12,13 @@
 }
 /* Dashboard grid */
 .dashboard {
-  flex: 1;                 /* take remaining height under header */
+  flex: 1 1 auto;                
   min-height: 0;           /* important so children can scroll */
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
   gap: 16px;
   padding: 16px;
+  height: 100%
 }
 
 
@@ -32,15 +33,17 @@
 
 /* Optional visual distinction */
 .left-panel {
-  min-width: 220px;
+  width: 300px;
+  flex: 0 0 auto;
 }
 
 .center-panel {
-  min-width: 400px;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .right-panel {
-  min-width: 220px;
+  flex: 0 0 auto;
 }
 
 /* Headings inside panels */
@@ -50,3 +53,4 @@
   font-weight: 600;
   color: #1f2937;
 }
+
