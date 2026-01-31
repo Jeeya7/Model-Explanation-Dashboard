@@ -31,10 +31,28 @@
   height: 100%;
 }
 
-/* Optional visual distinction */
 .left-panel {
-  width: 300px;
-  flex: 0 0 auto;
+  padding: 12px;         
+  font-size: 0.9rem;      
+  overflow-y: auto;       /* prevents cutoff */
+}
+
+/* Slider label spacing */
+.left-panel label,
+.left-panel .MuiTypography-root {
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+/* Slider itself */
+.left-panel .MuiSlider-root {
+  margin: 8px 0 12px;     /* tighter vertical spacing */
+}
+
+/* Predict button */
+.left-panel button {
+  padding: 8px 12px;
+  font-size: 0.9rem;
 }
 
 .center-panel {

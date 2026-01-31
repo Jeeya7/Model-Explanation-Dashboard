@@ -18,9 +18,6 @@ function DashboardPage() {
   const [treeError, setTreeError] = useState<string>("");
   const [prediction, setPrediction] = useState<PredictionDTO | null>(null);
 
-  // 🔹 NEW: metrics panel collapse state
-  const [metricsCollapsed, setMetricsCollapsed] = useState(false);
-
   const handlePredict = () => {
     setPrediction(null);
     setRunId((x) => x + 1);
@@ -81,44 +78,17 @@ function DashboardPage() {
           />
         </div>
 
-        {/* RIGHT PANEL (RESIZABLE / COLLAPSIBLE) */}
+        {/* RIGHT PANEL */}
         <div
           className="panel right-panel"
-          style={{
-            width: metricsCollapsed ? 56 : 360,
-            transition: "width 180ms ease",
-          }}
+          style={{ width: 380 }}
         >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 8,
-            }}
-          >
-            {!metricsCollapsed && <h2 style={{ margin: 0 }}>Metrics</h2>}
+          <h2>Metrics</h2>
+          <Divider orientation="horizontal" />
 
-            <button
-              onClick={() => setMetricsCollapsed((v) => !v)}
-              style={{
-                cursor: "pointer",
-                border: "none",
-                background: "transparent",
-                fontSize: 16,
-              }}
-              title={metricsCollapsed ? "Show metrics" : "Hide metrics"}
-            >
-              {metricsCollapsed ? "⟨" : "⟩"}
-            </button>
+          <div className="panel-body">
+            <RightPanel tree={tree} />
           </div>
-
-          {!metricsCollapsed && (
-            <>
-              <Divider orientation="horizontal" />
-              <RightPanel tree={tree} />
-            </>
-          )}
         </div>
       </div>
     </div>
