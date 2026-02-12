@@ -83,30 +83,20 @@ I built this dashboard to bridge that gap:
 ## Screenshots
 
 ### 1) Full Dashboard View
-> 📸 **Screenshot goes here**
-<!-- TODO: Add screenshot of full UI -->
-<!-- Example: ![Dashboard Overview](docs/images/dashboard-overview.png) -->
+![Full Dashboard View](images/image.png)
 
 ### 2) Tree Visualization (Zoomed)
-> 📸 **Screenshot goes here**
-<!-- TODO: Add screenshot of ReactFlow tree -->
-<!-- Example: ![Tree View](docs/images/tree-view.png) -->
+![Tree Visualization](images/image-1.png)
 
 ### 3) Prediction Path Highlighted
-> 📸 **Screenshot goes here**
-<!-- TODO: Add screenshot showing highlighted path -->
-<!-- Example: ![Prediction Path](docs/images/prediction-path.png) -->
+![Prediction Path Highlighted](images/image-2.png)
 
 ### 4) Metrics Panel / Confusion Matrix
-> 📸 **Screenshot goes here**
-<!-- TODO: Add screenshot of metrics -->
-<!-- Example: ![Metrics](docs/images/metrics.png) -->
-
+![Metrics Panel](images/image-3.png)
+![Row Normalized Metrics Panel](images/image-4.png)
 ---
 
 ## Architecture
-
-<!-- TODO: Add architecture diagram -->
 
 **High-level flow:**
 1. User selects dataset / parameters in the frontend
