@@ -11,7 +11,7 @@ router = APIRouter()
 def health_check():
     return {"status": "ok"}
 
-@router.post("/api/train")
+@router.post("/train")
 def train():
     return tree_service()
 
@@ -19,7 +19,7 @@ class PredictRequest(BaseModel):
     tree: dict[str, Any]
     x: list[float]
 
-@router.post("/api/predict")
+@router.post("/predict")
 def predict(req: PredictRequest):
     x = req.x
     tree = req.tree
