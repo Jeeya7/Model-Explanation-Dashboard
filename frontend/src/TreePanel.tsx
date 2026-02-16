@@ -1,6 +1,6 @@
 // src/TreePanel.tsx
 import { useMemo } from "react";
-import ReactFlow, { Background, Controls, type Node, type Edge } from "reactflow";
+import ReactFlow, { Background, Controls} from "reactflow";
 import "reactflow/dist/style.css";
 import "./style/TreePanel.css";
 
