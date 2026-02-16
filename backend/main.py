@@ -9,7 +9,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://jeeya7.github.io/Model-Explanation-Dashboard/",
+        "https://jeeya7.github.io",
     ],
     allow_credentials=True,
     allow_methods=["*"],
